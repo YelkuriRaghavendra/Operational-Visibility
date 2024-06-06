@@ -15,7 +15,6 @@ COPY . .
 
 # Run the preprocess and db_init scripts
 RUN python preprocess.py
-RUN python db_init.py
 
 # Expose the port Streamlit uses
 EXPOSE 8501
