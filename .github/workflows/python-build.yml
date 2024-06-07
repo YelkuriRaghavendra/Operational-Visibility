@@ -33,7 +33,7 @@ jobs:
         run: |
           IMAGE_TAG=$(echo $COMMIT_SHA | cut -c 1-7) 
           # Build the Docker image
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           
           # Tag the Docker image
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -66,6 +66,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ./hello-anu.pem $USER@$HOST  "
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
           docker stop observability-visibility && docker rm observability-visibility
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker run -d --name observability-visibility --network dev -p 8501:8501 $ECR_REGISTRY/$ECR_REPOSITORY:latest
           "
