@@ -1,6 +1,5 @@
 import psycopg2
 import pandas as pd
-from config import DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT
 from ddl_queries import ddl_queries
 from insert_queries import insert_queries
 import os
@@ -10,7 +9,7 @@ def get_connection():
         dbname="postgres",
         user="postgres",
         password="postgres",
-        host= "34.235.167.47",
+        host= "postgres",
         port="5432"
     )
     return conn
