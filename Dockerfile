@@ -1,5 +1,5 @@
 # Use the official Python image from the Docker Hub
-FROM python:alpine3.20
+FROM python:3.9-slim
 
 # Set the working directory in the container
 WORKDIR /Dashboard
