@@ -63,5 +63,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ./hello-anu.pem $USER@$HOST  "
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
           docker stop observability-visibility && docker rm observability-visibility
+          docker rmi $ECR_REGISTRY/$ECR_REPOSITORY
           docker run -d --name observability-visibility -p 8501:8501 $ECR_REGISTRY/$ECR_REPOSITORY:latest
           "
