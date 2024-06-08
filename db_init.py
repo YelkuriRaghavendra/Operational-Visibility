@@ -9,7 +9,7 @@ def get_connection():
         dbname="postgres",
         user="postgres",
         password="postgres",
-        host= "ec2-54-227-107-65.compute-1.amazonaws.com",
+        host= "postgres",
         port="5432"
     )
     return conn
