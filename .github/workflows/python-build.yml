@@ -33,7 +33,7 @@ jobs:
         run: |
           IMAGE_TAG=$(echo $COMMIT_SHA | cut -c 1-7) 
           # Build the Docker image
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG --no-cache .
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           
           # Tag the Docker image
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
