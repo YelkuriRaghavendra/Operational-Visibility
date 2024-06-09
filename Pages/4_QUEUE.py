@@ -7,9 +7,9 @@ def get_sqs_client():
     try:
         sqs = boto3.client(
             'sqs',
-            aws_access_key_id="ASIA3FLDYIYZJOYBGDMT",
-            aws_secret_access_key="lKDm8ncg3fiSxehjNQUACQARYMiXw3EFoPK//g8m",
-            aws_session_token="IQoJb3JpZ2luX2VjEJT//////////wEaCXVzLWVhc3QtMSJHMEUCICHTkw4mkz6IyavKEgVWj+VKy6rFbBMsU+NVGGpO6x6hAiEA5g4CM7Hq6vqC8LUdms5kxbpJIKopHpiSvI0aTHCoTVgqoAMILBAAGgw3NjczOTc3NDIxMzAiDFDVmlTFuuI2ZUnTrSr9ApEF8GF1IUHpUglxh4QcJT12D5bCt4gooR8YZoFNPfd/hO31Mf9pS8ff1494lE6oohIIPtRGr6jS2vjYnHRq74sMgQ7Yd6C73EAR1JINI0ghUC7/4DLGUvIsMecQwzMGkb1zzvBrTToeJTUSrAx7laZ0mz+1cqDnxRf5DGAYcWb2SU5CZPAZY6eVTKXRZwByVufh2o07z9VgLCgKlEvjuOsGgDseilWFD08Zkj0gBNTBmq9yQNcd/zDWqK0RHWIVVsD5oNPaQMsreG1XbnMl431csv57hjKsAF8ozA6CKzXett4UGT1QyHa15Nb2FMIS2OLWpq3bdImYJWH97Zsn0dfWcNGtwRFI80hdM5mhAchfCUqadMyBZOPVo7tVotPcaeqwVFbDRo/gH37d00x6a228v7jeBRDf99NLO0sjeq2HYraIIpzgYEsN1APsH5kWMEB2Fwf5ixr3ZD+gXWHsRxDtMQmxpvHzCkQcIWJH9sHdyKaKt4XsoLWjUCrmPDCmm5azBjqmAf2KbrJt69gRn1ABMxrlnAOgmEUA78nuoQsGlM5n2pZ35jms1lJO5zapzNK+WUhITHbASNW4ds8CIetXGBIC1I9uutkQEZ+JBGW18sugCkwbhy+FJr4s04ZO2KUrAG6BQXRUU4J0k5m32bHWL/aWzx1RsxuN2j1a570PIy9D9D+9w5tRGvUxwwjo0JfspZB6TUgk5USP632HA8+yYwqsvOLsFfRMaMQ=",
+            aws_access_key_id="",
+            aws_secret_access_key="",
+            aws_session_token="",
             region_name='us-east-1'
         )
         return sqs
