@@ -1,45 +1,51 @@
 import streamlit as st
 from db_init import fetch_data
 import pandas as pd
+from datetime import date
 
-# Function to get distinct node_ids, node_names, and node_types with "STOCKS_UPDATED" events for a selected date
-def get_nodes_for_date(selected_date):
+# Function to get distinct node_ids, node_names, and node_types with "STOCKS_UPDATED" events for a selected date range
+def get_nodes_for_date_range(start_date, end_date):
     query = """
     SELECT DISTINCT ss.node_id::text, nl.node_name, nl.node_type
     FROM supply_summary ss
     JOIN node_lookup nl ON ss.node_id::text = nl.node_id::text
     WHERE ss.last_source_update_event = 'STOCKS_UPDATED'
-    AND DATE(ss.created_at) = %s;
+    AND DATE(ss.created_at) BETWEEN %s AND %s;
     """
-    result = fetch_data(query, (selected_date,))
+    result = fetch_data(query, (start_date, end_date))
     if not result.empty:
         return result.set_index('node_id').to_dict('index')
     else:
         return {}
 
 # Function to fetch the selected data
-def fetch_selected_data(table_name, selected_date, selected_node_ids):
+def fetch_selected_data(table_name, start_date, end_date, selected_node_ids):
     node_id_placeholders = ', '.join(['%s'] * len(selected_node_ids))
     query = f"""
     SELECT *
-    FROM supply_summary
+    FROM {table_name}
     WHERE last_source_update_event = 'STOCKS_UPDATED'
-    AND DATE(created_at) = %s
+    AND DATE(created_at) BETWEEN %s AND %s
     AND node_id::text IN ({node_id_placeholders});
     """
-    params = (selected_date,) + tuple(selected_node_ids)
+    params = (start_date, end_date) + tuple(selected_node_ids)
     result = fetch_data(query, params)
     return result
 
 # Streamlit UI
 st.title('DELTA_SYNC')
 
-# Create columns for date and type selection
+# Create columns for date range and type selection
 col1, col2 = st.columns(2)
 
 with col1:
-    # Date input
-    selected_date = st.date_input("Select a date")
+    # Date range input
+    today = date.today()
+    date_range = st.date_input("Select a date range", [today, today])
+    if len(date_range) == 2:
+        start_date, end_date = date_range
+    else:
+        start_date, end_date = None, None
 
 with col2:
     # Type selection
@@ -52,9 +58,10 @@ if type_selection == "1P":
 elif type_selection == "3P":
     node_type_filter = ("_3PL",)
 
-if selected_date and node_type_filter:
-    # Fetch distinct node_ids and node_names with "STOCKS_UPDATED" events for the selected date and type
-    nodes = get_nodes_for_date(selected_date)
+# Ensure valid date range is selected
+if start_date and end_date and start_date <= end_date and node_type_filter:
+    # Fetch distinct node_ids and node_names with "STOCKS_UPDATED" events for the selected date range and type
+    nodes = get_nodes_for_date_range(start_date, end_date)
     
     if nodes:
         # Filter nodes based on the selected type
@@ -78,9 +85,11 @@ if selected_date and node_type_filter:
                 ]
                 
                 # Fetch and display the selected data
-                selected_data = fetch_selected_data("supply_summary", selected_date, selected_node_ids)
+                selected_data = fetch_selected_data("supply_summary", start_date, end_date, selected_node_ids)
                 st.write(selected_data)
         else:
-            st.write(f"No node names with 'STOCKS_UPDATED' events present for the selected date and type {type_selection}.")
+            st.write(f"No node names with 'STOCKS_UPDATED' events present for the selected date range and type {type_selection}.")
     else:
-        st.write(f"No node names with 'STOCKS_UPDATED' events present for the selected date and type {type_selection}.")
+        st.write(f"No node names with 'STOCKS_UPDATED' events present for the selected date range and type {type_selection}.")
+else:
+    st.write("Please select a valid date range.")

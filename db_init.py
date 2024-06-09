@@ -10,10 +10,19 @@ def get_connection():
         dbname="postgres",
         user="postgres",
         password="postgres",
-        host= "192.168.255.1",
-        port=5435
+        host= "192.168.57.1",
+        port="5435"
     )
     return conn
+
+def fetch_data(query, params=None):
+    conn = get_connection()
+    with conn.cursor() as cursor:
+        cursor.execute(query, params)
+        data = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+    conn.close()
+    return pd.DataFrame(data, columns=columns)
 
 def create_tables():
     try:
@@ -109,13 +118,4 @@ create_tables()
 
 # Call the function to load data from CSV files and insert into tables
 load_data_from_csv_and_insert()
-
-def fetch_data(query, params=None):
-    conn = get_connection()
-    with conn.cursor() as cursor:
-        cursor.execute(query, params)
-        data = cursor.fetchall()
-        columns = [desc[0] for desc in cursor.description]
-    conn.close()
-    return pd.DataFrame(data, columns=columns)
 

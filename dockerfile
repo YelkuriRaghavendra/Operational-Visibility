@@ -1,13 +1,15 @@
 # Use the official Python image from the Docker Hub
-FROM python:3.9-slim
+FROM python:3
 
 # Set the working directory in the container
 WORKDIR /Dashboard
+
 
 # Copy the requirements file into the container
 COPY Requirements.txt .
 
 # Install the Python dependencies
+RUN pip3 install --upgrade pip
 RUN pip install --no-cache-dir -r Requirements.txt
 
 # Copy the rest of the application code into the container
@@ -20,4 +22,4 @@ RUN python preprocess.py
 EXPOSE 8501
 
 # Command to run the Streamlit app
-CMD ["streamlit", "run", "Dashboard.py"]
+CMD ["sh","entrypoint.sh"]

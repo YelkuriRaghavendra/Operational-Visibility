@@ -6,8 +6,12 @@ import os
 from psycopg2 import sql
 import calendar
 
-from Pages.full_sync_details.node_viz import detailed_page
+from pages.full_sync_details.node_viz import detailed_page
 from db_init import fetch_data
+
+hide_streamlit_style = "<style> #MainMenu {visibility: hidden;} footer {visibility: hidden;} </style>"
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 
 @st.cache_resource
 def get_sync_summary(selected_date):
